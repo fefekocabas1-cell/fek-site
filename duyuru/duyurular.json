@@ -1,4 +1,22 @@
 {
   "surum": 1,
-  "duyurular": []
+  "duyurular": [
+    {
+      "id": "y-20260928-vnn6",
+      "tur": "yakinda",
+      "aktif": true,
+      "baslik": "içerik editi",
+      "metin": "yakında hem de çok!",
+      "medya": {
+        "url": "duyuru/medya/y-20260928-vnn6-oi8a0o.jpg",
+        "tur": "resim",
+        "en": 800,
+        "boy": 800
+      },
+      "hedef": "herkes",
+      "gosterim": 1,
+      "oncelik": 0
+    }
+  ],
+  "guncelleme": "2026-09-28T22:11:37Z"
 }
