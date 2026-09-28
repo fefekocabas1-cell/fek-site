@@ -36,7 +36,27 @@
       "hedef": "herkes",
       "gosterim": 0,
       "oncelik": 0
+    },
+    {
+      "id": "b-20260928-ap6c",
+      "tur": "banner",
+      "aktif": true,
+      "baslik": "",
+      "metin": "",
+      "medya": {
+        "url": "duyuru/medya/b-20260928-ap6c-wx8ivu.jpg",
+        "tur": "resim",
+        "en": 1200,
+        "boy": 400
+      },
+      "dugme": {
+        "yazi": "Pro'yu gör",
+        "eylem": "paywall"
+      },
+      "hedef": "herkes",
+      "gosterim": 1,
+      "oncelik": 0
     }
   ],
-  "guncelleme": "2026-09-28T22:13:16Z"
+  "guncelleme": "2026-09-28T22:14:35Z"
 }
