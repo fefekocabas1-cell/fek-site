@@ -4,7 +4,7 @@
     {
       "id": "y-20260928-vnn6",
       "tur": "yakinda",
-      "aktif": false,
+      "aktif": true,
       "baslik": "içerik editi",
       "metin": "yakında hem de çok!",
       "medya": {
@@ -20,7 +20,7 @@
     {
       "id": "p-20260928-39pl",
       "tur": "popup",
-      "aktif": false,
+      "aktif": true,
       "baslik": "Uygulama Testleri Devam Ediyor",
       "metin": "wuhuu",
       "medya": {
@@ -56,7 +56,19 @@
       "hedef": "herkes",
       "gosterim": 1,
       "oncelik": 0
+    },
+    {
+      "id": "k-20260929-03mx",
+      "tur": "kampanya",
+      "aktif": true,
+      "baslik": "Kışa giriş indirimleri",
+      "metin": "wwwwww.al.com",
+      "renk": "#4fd18b",
+      "etiket": "%50",
+      "hedef": "herkes",
+      "gosterim": 1,
+      "oncelik": 0
     }
   ],
-  "guncelleme": "2026-09-29T06:46:32Z"
+  "guncelleme": "2026-09-29T08:44:08Z"
 }
