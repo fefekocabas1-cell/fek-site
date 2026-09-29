@@ -27,7 +27,9 @@
   <li><strong>Videolar ve fotoğraflar:</strong> Yalnızca seçtiğin öğeler, düzenlemek için uygulamanın kendi klasörüne kopyalanır. Uygulama içi medya galerisinde önizleme için Fotoğraflar arşivine erişim izni istenir; bu izin yalnızca galeriyi uygulama içinde göstermek için kullanılır ve istediğin zaman Ayarlar'dan değiştirilebilir ("Sınırlı erişim" de seçebilirsin).</li>
   <li><strong>Otomatik altyazı ve çeviri:</strong> Konuşma, cihazında çalışan Whisper modeliyle yazıya dökülür. Ses kaydı ya da metin hiçbir yere gönderilmez.</li>
   <li><strong>Akıllı araçlar:</strong> Yüz takibi (dikey kadraj), arka plan kaldırma, sessizlik ve vuruş bulma Apple'ın cihaz üzerindeki çerçeveleriyle (Vision, AVFoundation) yapılır. Yüz bilgisi saklanmaz, kimse tanımlanmaz; yalnızca o anki kadrajı hesaplamak için kullanılır.</li>
-  <li><strong>Mikrofon:</strong> Yalnızca seslendirme kaydı başlattığında kullanılır; kayıt projene eklenir.</li>
+  <li><strong>Mikrofon:</strong> Yalnızca seslendirme ya da video kaydı başlattığında kullanılır; kayıt projene eklenir.</li>
+  <li><strong>Kamera:</strong> Yalnızca "Kamerayla çek" (teleprompter) ekranında kullanılır; çekilen video cihazında kalır.</li>
+  <li><strong>Sorun raporları:</strong> Çökme ve takılma bilgileri Apple'ın sistemiyle yalnızca cihazında saklanır. Bize hiçbir şey kendiliğinden gönderilmez; yalnızca Ayarlar → "Sorun bildir" ile kendin paylaşmayı seçersen ulaşır. Rapor kişisel veri içermez.</li>
   <li><strong>Fotoğraflar'a kaydetme:</strong> Dışa aktardığın video, GIF ya da kapak resmini kaydetmek için ekleme izni istenir.</li>
   <li><strong>Marka seti:</strong> Logon, renklerin ve kayıtlı stillerin yalnızca cihazında, uygulamanın klasöründe saklanır.</li>
 </ul>
@@ -63,7 +65,8 @@
   <li><strong>Media:</strong> Only the items you choose are copied into the app's own folder. Photo library access is requested only to show your library inside the in-app media browser; you can choose limited access or change it anytime in Settings.</li>
   <li><strong>Captions and translation:</strong> Speech is transcribed on your device with an on-device Whisper model. Audio and text are never uploaded.</li>
   <li><strong>Smart tools:</strong> Face tracking, background removal, silence and beat detection run on-device with Apple frameworks (Vision, AVFoundation). Face data is not stored and no one is identified.</li>
-  <li><strong>Microphone:</strong> Used only while you record a voiceover.</li>
+  <li><strong>Microphone and camera:</strong> Used only while you record a voiceover or record video on the teleprompter screen. Recordings stay on your device.</li>
+  <li><strong>Problem reports:</strong> Crash and hang diagnostics from Apple are stored only on your device and are never sent automatically; they reach us only if you choose Settings → "Report a problem" and share them yourself. They contain no personal data.</li>
   <li><strong>Network:</strong> Fek connects to the internet only to download caption models (open-source WhisperKit models hosted on Hugging Face), to read a public announcements file (and its images) from this site on GitHub Pages at most every 15 minutes — no personal data or identifiers are sent, and which announcements you saw or dismissed is stored only on your device — and for App Store purchases, which are handled entirely by Apple.</li>
   <li><strong>No tracking, ads, analytics or third-party sharing.</strong> Fek does not knowingly collect data from children.</li>
   <li><strong>Deleting data:</strong> Delete projects in the app, or delete the app to remove all projects, media copies, brand kit and models.</li>
