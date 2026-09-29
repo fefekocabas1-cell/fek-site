@@ -367,7 +367,7 @@ function temizDosya(kaynak = dosya) {
     const c = { id:d.id, tur:d.tur, aktif:!!d.aktif, baslik:d.baslik || "", metin:d.metin || "" };
     if (d.medya) c.medya = { url:d.medya.url, tur:d.medya.tur, en:d.medya.en, boy:d.medya.boy };
     if (d.dugme && d.dugme.yazi?.trim()) { c.dugme = { yazi:d.dugme.yazi.trim(), eylem:d.dugme.eylem }; if (d.dugme.eylem === "url") c.dugme.url = (d.dugme.url || "").trim(); }
-    for (const k of ["baslangic","bitis","enAzSurum","renk","etiket"]) if (d[k]) c[k] = d[k];
+    for (const k of ["baslangic","bitis","enAzSurum","renk","etiket","dil"]) if (d[k]) c[k] = d[k];
     c.hedef = d.hedef || "herkes"; c.gosterim = Number(d.gosterim ?? 1); c.oncelik = Number(d.oncelik || 0);
     return c;
   });
@@ -668,7 +668,7 @@ function listeCiz() {
     k.append(el("button", { class:"oge" + (d.id === secili ? " secili" : ""), onclick:() => { secili = d.id; hepsiniCiz(); } },
       el("div", { class:"kucukresim", style:d.tur === "kampanya" ? `background:${d.renk || "#ffd84d"};color:#000;font-weight:900;font-size:12px` : null },
         m || (d.tur === "kampanya" ? (d.etiket || "%") : "✦")),
-      el("div", { class:"yazi" }, el("b", { text:d.baslik || "(başlıksız)" }), el("span", { text:TURLER[d.tur].ad + (hatalar.has(d.id) ? " · eksik alan" : "") })),
+      el("div", { class:"yazi" }, el("b", { text:d.baslik || "(başlıksız)" }), el("span", { text:TURLER[d.tur].ad + (d.dil ? " · " + d.dil.toUpperCase() : "") + (hatalar.has(d.id) ? " · eksik alan" : "") })),
       el("span", { class:"durum " + s, text:sy })
     ));
   }
@@ -799,6 +799,8 @@ function editorCiz(medyaDurumu) {
     alan("Başlangıç", girdi("datetime-local", yerelYap(d.baslangic), v => d.baslangic = isoYap(v)), { ipucu:"Boşsa hemen" }),
     alan(d.tur === "kampanya" ? "Bitiş (son gün)" : "Bitiş", girdi("datetime-local", yerelYap(d.bitis), v => d.bitis = isoYap(v)), { hata:h.bitis, ipucu:"Boşsa süresiz" })));
   y.append(alan("Kime", segment([["herkes","Herkes"],["ucretsiz","Ücretsiz kullanıcılar"],["pro","Pro aboneler"]], d.hedef || "herkes", v => { d.hedef = v; guncelle(true); })));
+  y.append(alan("Dil", segment([["","Tüm diller"],["tr","Türkçe"],["en","İngilizce"]], d.dil || "", v => { d.dil = v || undefined; guncelle(true); }),
+    { ipucu:"Uygulama İngilizce de açılabiliyor: aynı duyurunun iki dilli halini ayrı ayrı ekleyebilirsin" }));
   y.append(el("div", { class:"satir" },
     d.tur === "popup" ? alan("Gösterim", el("select", { onchange:e => { d.gosterim = +e.target.value; guncelle(); } },
       ...[[1,"Bir kez"],[2,"2 kez"],[3,"3 kez"],[5,"5 kez"],[0,"Her açılışta"]].map(([v, a]) => el("option", { value:v, selected:Number(d.gosterim ?? 1) === v, text:a }))),
