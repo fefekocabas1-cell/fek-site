@@ -281,7 +281,7 @@ input[type=datetime-local] { color-scheme:dark; }
     </table>
     <p><b>Nasıl çalışır?</b> Yayınla'ya bastığında duyurular ve medya fek-site deposuna tek bir kayıtla gider, GitHub Pages yaklaşık 1 dakikada yayına alır. Uygulama açılışta ve öne geldiğinde en fazla 15 dakikada bir kontrol eder; dosya değişmediyse hiçbir şey indirmez. Medya yalnızca gösterilecekse ve bir kez indirilir. Hiç duyuru yoksa uygulamada o bölümler hiç yer kaplamaz.</p>
     <p><b>Popup</b> oturum başına en fazla bir kez çıkar. “Gösterim” kaç kez görüneceğini belirler (0 = her açılışta). Aynı popup'ı herkese yeniden göstermek için editördeki <i>Herkese yeniden göster</i>'i kullan.</p>
-    <p><b>Banner</b> kullanıcı kapatınca bir daha görünmez. Birden çok banner kaydırmalı olarak sıralanır (öncelik yüksek olan önce).</p>
+    <p><b>Banner</b> kullanıcı tarafından kapatılamaz; yayından kaldırınca, kapatınca ya da bitiş tarihi gelince kaybolur. Birden çok banner kaydırmalı olarak sıralanır (öncelik yüksek olan önce).</p>
     <p><b>Fiyat ve indirimler</b> App Store Connect'te yapılır; kampanya kartı yalnızca duyurusudur. Tarih bitince kendiliğinden kaybolur.</p>
     <p><b>Video:</b> H.264 MP4, sessiz olarak döngüde oynar. <b>GIF</b> kısa ve az renkli olmalı; uzun animasyonlar için MP4 çok daha küçük olur.</p>
     <div class="alt-cubuk"><button class="btn ana" data-kapat>Tamam</button></div>
@@ -852,8 +852,7 @@ function onizlemeCiz() {
       const m = b.medya ? medyaEleman(b) : null;
       k.append(el("div", { class:"o-banner", style:m ? "" : `background:linear-gradient(135deg, ${renk(b)}47, #1c1c1f);outline:1px solid ${renk(b)}59;outline-offset:-1px` },
         m || el("div", { class:"metinli" }, el("b", { text:b.baslik || "Başlık" }), b.metin ? el("span", { text:b.metin }) : null,
-          b.dugme?.yazi ? el("i", { style:`background:${renk(b)}`, text:b.dugme.yazi }) : null),
-        el("span", { class:"o-x", text:"✕" })));
+          b.dugme?.yazi ? el("i", { style:`background:${renk(b)}`, text:b.dugme.yazi }) : null)));
       if (bannerlar.length > 1) k.append(el("div", { class:"o-noktalar" }, ...bannerlar.map(x => el("i", { class:x === b ? "a" : "" }))));
       else k.append(el("div", { style:"height:10px" }));
     }
