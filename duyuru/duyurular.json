@@ -20,18 +20,14 @@
     {
       "id": "p-20260928-39pl",
       "tur": "popup",
-      "aktif": false,
-      "baslik": "Uygulama Testleri Devam Ediyor",
+      "aktif": true,
+      "baslik": "Nabersiniz Çalışmaya devammm",
       "metin": "wuhuu",
       "medya": {
-        "url": "duyuru/medya/p-20260928-39pl-la96x5.jpg",
+        "url": "duyuru/medya/p-20260928-39pl-pppbqr.jpg",
         "tur": "resim",
         "en": 1080,
         "boy": 1350
-      },
-      "dugme": {
-        "yazi": "Pro'yu gör",
-        "eylem": "paywall"
       },
       "hedef": "herkes",
       "gosterim": 0,
@@ -70,5 +66,5 @@
       "oncelik": 0
     }
   ],
-  "guncelleme": "2026-09-29T15:35:01Z"
+  "guncelleme": "2026-09-30T08:55:54Z"
 }
