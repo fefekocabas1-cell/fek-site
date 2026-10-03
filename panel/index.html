@@ -21,6 +21,7 @@ button,input,select,textarea { font:inherit; color:inherit; }
 button { cursor:pointer; }
 a { color:var(--vurgu); }
 .gizli { display:none !important; }
+body.ucretsiz [data-pro] { display:none !important; }
 
 /* Üst çubuk */
 .ust { position:sticky; top:0; z-index:20; display:flex; align-items:center; gap:12px; padding:12px 20px; background:rgba(11,11,12,.86); backdrop-filter:blur(14px); border-bottom:1px solid var(--kenar); }
@@ -218,7 +219,7 @@ input[type=datetime-local] { color-scheme:dark; }
       <button class="yeni" data-yeni="popup"><b>Popup</b><span>Açılışta kart · 4:5</span></button>
       <button class="yeni" data-yeni="banner"><b>Banner</b><span>Ana ekran · 3:1</span></button>
       <button class="yeni" data-yeni="yakinda"><b>Yakında</b><span>Özellik kartı · 1:1</span></button>
-      <button class="yeni" data-yeni="kampanya"><b>Kampanya</b><span>Satın alma rozeti</span></button>
+      <button class="yeni" data-yeni="kampanya" data-pro><b>Kampanya</b><span>Satın alma rozeti</span></button>
     </div>
     <div class="baslik-kucuk">Duyurular</div>
     <div class="liste" id="liste"></div>
@@ -230,7 +231,7 @@ input[type=datetime-local] { color-scheme:dark; }
     <div class="sag-ic">
       <div class="onz-ust">
         <div class="baslik-kucuk" style="margin:0">Canlı önizleme</div>
-        <div class="segment" id="onzKitle">
+        <div class="segment" id="onzKitle" data-pro>
           <button data-k="ucretsiz" class="acik">Ücretsiz</button>
           <button data-k="pro">Pro</button>
         </div>
@@ -277,12 +278,12 @@ input[type=datetime-local] { color-scheme:dark; }
       <tr><td><b>Popup</b><br>açılışta kart</td><td><b>1080×1350</b><br>4:5</td><td>≤ 1 MB</td><td>≤ 4 MB</td><td>≤ 6 MB · ≤ 15 sn</td></tr>
       <tr><td><b>Banner</b><br>ana ekran üstü</td><td><b>1200×400</b><br>3:1</td><td>≤ 300 KB</td><td>≤ 1.5 MB</td><td>≤ 2 MB · ≤ 10 sn</td></tr>
       <tr><td><b>Yakında</b><br>özellik kartı</td><td><b>800×800</b><br>1:1</td><td>≤ 300 KB</td><td>≤ 1.5 MB</td><td>≤ 2 MB · ≤ 10 sn</td></tr>
-      <tr><td><b>Kampanya</b><br>satın alma ekranı</td><td colspan="4">Medya yok: rozet (ör. <code>%50</code>), başlık, metin, renk ve bitiş tarihi.</td></tr>
+      <tr data-pro><td><b>Kampanya</b><br>satın alma ekranı</td><td colspan="4">Medya yok: rozet (ör. <code>%50</code>), başlık, metin, renk ve bitiş tarihi.</td></tr>
     </table>
     <p><b>Nasıl çalışır?</b> Yayınla'ya bastığında duyurular ve medya fek-site deposuna tek bir kayıtla gider, GitHub Pages yaklaşık 1 dakikada yayına alır. Uygulama açılışta ve öne geldiğinde en fazla 15 dakikada bir kontrol eder; dosya değişmediyse hiçbir şey indirmez. Medya yalnızca gösterilecekse ve bir kez indirilir. Hiç duyuru yoksa uygulamada o bölümler hiç yer kaplamaz.</p>
     <p><b>Popup</b> oturum başına en fazla bir kez çıkar. “Gösterim” kaç kez görüneceğini belirler (0 = her açılışta). Aynı popup'ı herkese yeniden göstermek için editördeki <i>Herkese yeniden göster</i>'i kullan.</p>
     <p><b>Banner</b> kullanıcı tarafından kapatılamaz; yayından kaldırınca, kapatınca ya da bitiş tarihi gelince kaybolur. Birden çok banner kaydırmalı olarak sıralanır (öncelik yüksek olan önce).</p>
-    <p><b>Fiyat ve indirimler</b> App Store Connect'te yapılır; kampanya kartı yalnızca duyurusudur. Tarih bitince kendiliğinden kaybolur.</p>
+    <p data-pro><b>Fiyat ve indirimler</b> App Store Connect'te yapılır; kampanya kartı yalnızca duyurusudur. Tarih bitince kendiliğinden kaybolur.</p>
     <p><b>Video:</b> H.264 MP4, sessiz olarak döngüde oynar. <b>GIF</b> kısa ve az renkli olmalı; uzun animasyonlar için MP4 çok daha küçük olur.</p>
     <div class="alt-cubuk"><button class="btn ana" data-kapat>Tamam</button></div>
   </div>
@@ -296,6 +297,9 @@ const SAHIP = "fefekocabas1-cell", DEPO = "fek-site";
 const SITE = "https://fefekocabas1-cell.github.io/fek-site/";
 const JSON_YOL = "duyuru/duyurular.json", MEDYA_KLASOR = "duyuru/medya";
 const BEKLEYEN = "__bekleyen__";
+// Uygulama tamamen ücretsiz (Surum.ucretsiz): satın alma ekranı, Pro kitlesi ve kampanya şeridi yok.
+// Pro geri gelirse false yap; panel eski haline döner.
+const UCRETSIZ = true;
 
 const KB = 1024, MB = 1048576;
 const TURLER = {
@@ -387,6 +391,7 @@ function gosterilir(d, kitle, simdi = new Date()) {
   if (!d.aktif) return false;
   if (d.baslangic && simdi < new Date(d.baslangic)) return false;
   if (d.bitis && simdi >= new Date(d.bitis)) return false;
+  if (UCRETSIZ) return true;   // uygulama hedef kitleye bakmaz
   if (d.hedef === "ucretsiz" && kitle === "pro") return false;
   if (d.hedef === "pro" && kitle !== "pro") return false;
   return true;
@@ -407,6 +412,8 @@ function dogrula(d) {
     if (!/^(https:\/\/|mailto:)/i.test(u)) h.url = "https:// ile başlayan bir adres gir";
     else { try { new URL(u); } catch { h.url = "Geçersiz adres"; } }
   }
+  if (UCRETSIZ && d.aktif && d.dugme?.eylem === "paywall") h.dugme = "Pro ekranı artık yok: düğme için “Hiçbir şey” ya da “Bağlantı” seç";
+  if (UCRETSIZ && d.tur === "kampanya" && d.aktif) h.tur = "Kampanya şeridi yalnızca satın alma ekranında görünür; ücretsiz sürümde gösterilmez (kapat ya da sil)";
   if (d.dugme && d.dugme.eylem !== "kapat" && d.dugme.yazi?.length > 28) h.dugme = "Düğme yazısı en çok 28 karakter";
   if (d.baslangic && d.bitis && new Date(d.bitis) <= new Date(d.baslangic)) h.bitis = "Bitiş, başlangıçtan sonra olmalı";
   if (d.enAzSurum && !/^\d+(\.\d+){0,2}$/.test(d.enAzSurum)) h.enAzSurum = "Ör. 1.1 ya da 1.2.0";
@@ -711,6 +718,7 @@ function editorCiz(medyaDurumu) {
     el("label", { class:"anahtar" }, el("input", { type:"checkbox", checked:d.aktif, onchange:e => { d.aktif = e.target.checked; guncelle(); } }), el("span", { class:"ray" }), el("span", { text:"Aktif" }))
   ));
   k.append(el("p", { class:"ipucu", style:"margin:-8px 0 16px", text:t.aciklama }));
+  if (h.tur) k.append(el("p", { class:"hata-yazi", style:"margin:-8px 0 16px", text:h.tur }));
 
   // Medya
   if (d.tur !== "kampanya") {
@@ -784,7 +792,10 @@ function editorCiz(medyaDurumu) {
     const dg = d.dugme || { yazi:"", eylem:"paywall" };
     const eylemDegis = v => { d.dugme = { ...dg, eylem:v, yazi:dg.yazi || (v === "paywall" ? "Pro'yu gör" : v === "url" ? "İncele" : "") }; if (v === "kapat") d.dugme = undefined; guncelle(true); };
     const b = el("div", { class:"bolum" }, el("h3", {}, d.tur === "banner" ? "Dokununca" : "Düğme", el("small", { text:d.tur === "banner" ? "bannera dokunulunca ne olsun" : "" })));
-    b.append(segment([["kapat","Hiçbir şey"],["paywall","Pro ekranı"],["url","Bağlantı"]], d.dugme ? d.dugme.eylem : "kapat", eylemDegis));
+    const eylemler = UCRETSIZ ? [["kapat","Hiçbir şey"],["url","Bağlantı"]] : [["kapat","Hiçbir şey"],["paywall","Pro ekranı"],["url","Bağlantı"]];
+    b.append(segment(eylemler, d.dugme ? d.dugme.eylem : "kapat", eylemDegis));
+    if (UCRETSIZ && d.dugme?.eylem === "paywall")
+      b.append(el("div", { class:"hata-yazi", style:"margin-top:10px", text:"Bu düğme Pro ekranını açıyordu; uygulama artık ücretsiz olduğu için gösterilmiyor. “Hiçbir şey” ya da “Bağlantı” seç." }));
     if (d.dugme) {
       b.append(el("div", { class:"satir", style:"margin-top:12px" },
         (d.tur === "popup" || !d.medya) ? alan("Düğme yazısı", girdi("text", d.dugme.yazi, v => d.dugme.yazi = v, { maxLength:28 }), { hata:h.dugme }) : null,
@@ -798,7 +809,7 @@ function editorCiz(medyaDurumu) {
   y.append(el("div", { class:"satir" },
     alan("Başlangıç", girdi("datetime-local", yerelYap(d.baslangic), v => d.baslangic = isoYap(v)), { ipucu:"Boşsa hemen" }),
     alan(d.tur === "kampanya" ? "Bitiş (son gün)" : "Bitiş", girdi("datetime-local", yerelYap(d.bitis), v => d.bitis = isoYap(v)), { hata:h.bitis, ipucu:"Boşsa süresiz" })));
-  y.append(alan("Kime", segment([["herkes","Herkes"],["ucretsiz","Ücretsiz kullanıcılar"],["pro","Pro aboneler"]], d.hedef || "herkes", v => { d.hedef = v; guncelle(true); })));
+  if (!UCRETSIZ) y.append(alan("Kime", segment([["herkes","Herkes"],["ucretsiz","Ücretsiz kullanıcılar"],["pro","Pro aboneler"]], d.hedef || "herkes", v => { d.hedef = v; guncelle(true); })));
   y.append(alan("Dil", segment([["","Tüm diller"],["tr","Türkçe"],["en","İngilizce"]], d.dil || "", v => { d.dil = v || undefined; guncelle(true); }),
     { ipucu:"Uygulama İngilizce de açılabiliyor: aynı duyurunun iki dilli halini ayrı ayrı ekleyebilirsin" }));
   y.append(el("div", { class:"satir" },
@@ -844,7 +855,7 @@ function onizlemeCiz() {
     k.append(el("div", { class:"e-plan a" }), el("div", { class:"e-plan" }), el("div", { class:"e-plan" }));
     not.textContent = "Satın alma ekranı · kampanya yoksa şerit hiç görünmez";
   } else {
-    k.append(el("div", { class:"e-baslik" }, el("b", {}, "fek", el("span", { text:"." })), onzKitle === "pro" ? null : el("span", { class:"e-pro", text:"Pro'ya geç" })));
+    k.append(el("div", { class:"e-baslik" }, el("b", {}, "fek", el("span", { text:"." })), onzKitle === "pro" || UCRETSIZ ? null : el("span", { class:"e-pro", text:"Pro'ya geç" })));
     k.append(el("div", { class:"e-alt", style:"font-size:19px;margin-top:2px", text:"Projeler" }));
     // bannerlar
     let bannerlar = gorunur.filter(x => x.tur === "banner").sort((a, b) => b.oncelik - a.oncelik);
@@ -901,7 +912,7 @@ function anahtarPenceresi(ac) {
 document.querySelectorAll("[data-yeni]").forEach(b => b.addEventListener("click", () => {
   const tur = b.dataset.yeni;
   const d = { id:tekId(tur), tur, aktif:true, baslik:"", metin:"", hedef:tur === "kampanya" ? "ucretsiz" : "herkes", gosterim:1, oncelik:0 };
-  if (tur === "popup") d.dugme = { yazi:"Pro'yu gör", eylem:"paywall" };
+  if (tur === "popup" && !UCRETSIZ) d.dugme = { yazi:"Pro'yu gör", eylem:"paywall" };
   if (tur === "kampanya") d.etiket = "%50";
   dosya.duyurular.push(d); secili = d.id; hepsiniCiz(); taslakKaydet();
 }));
@@ -938,6 +949,7 @@ document.addEventListener("keydown", e => {
 });
 window.addEventListener("beforeunload", e => { if (bekleyen.size || degisiklikVar()) { e.preventDefault(); e.returnValue = ""; } });
 
+if (UCRETSIZ) document.body.classList.add("ucretsiz");
 (async () => {
   const kayitli = depoOku("fek.panel.anahtar");
   try {
