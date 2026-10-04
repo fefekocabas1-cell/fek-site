@@ -20,7 +20,7 @@
     {
       "id": "p-20260928-39pl",
       "tur": "popup",
-      "aktif": true,
+      "aktif": false,
       "baslik": "Nabersiniz Çalışmaya devammm",
       "metin": "wuhuu",
       "medya": {
@@ -66,5 +66,5 @@
       "oncelik": 0
     }
   ],
-  "guncelleme": "2026-09-30T08:55:54Z"
+  "guncelleme": "2026-10-04T00:41:47Z"
 }
